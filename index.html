@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Empanadas y Lulada</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="escena" id="escena" tabindex="0" aria-label="Toca la pantalla para continuar">
+    <img class="foto" id="foto" alt="" hidden>
+  </main>
+
+  <audio id="audio" preload="auto">
+    <source id="fuente" type="audio/mp4">
+  </audio>
+
+  <script>
+    // Orden de imágenes y audios de esta página (rutas dentro de esta carpeta)
+    const secuencia = [
+      { imagen: 'IMG/empanadas.jpeg', alt: 'Empanadas', audio: 'AUDIO/05.mp4' },
+      { imagen: 'IMG/lulada.jpeg', alt: 'Lulada', audio: 'AUDIO/00.mp4' }
+    ];
+
+    const escena = document.getElementById('escena');
+    const foto = document.getElementById('foto');
+    const audio = document.getElementById('audio');
+    const fuente = document.getElementById('fuente');
+    let paso = -1;
+
+    function mostrarPaso(indice) {
+      paso = indice;
+      const item = secuencia[paso];
+      foto.src = item.imagen;
+      foto.alt = item.alt;
+      foto.hidden = false;
+      fuente.src = item.audio;
+      audio.load();
+      audio.play().catch(() => {});
+    }
+
+    function avanzar() {
+      // Al llegar a la última imagen, vuelve a empezar desde la primera
+      mostrarPaso((paso + 1) % secuencia.length);
+    }
+
+    escena.addEventListener('click', avanzar);
+    escena.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        avanzar();
+      }
+    });
+  </script>
+</body>
+</html>
